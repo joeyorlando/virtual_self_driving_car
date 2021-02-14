@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  goober-db:
+    image: mariadb:10.5.8
+    container_name: goober-db
+    environment:
+      MYSQL_ROOT_PASSWORD: goober
+      MYSQL_DATABASE: goober
+      MYSQL_USER: goober
+      MYSQL_PASSWORD: goober
+    volumes:
+      - goober_db_data:/var/lib/mysql:delegated
+      - ./docker/seed_database.sql:/docker-entrypoint-initdb.d/seed_database.sql
+    ports:
+      - "3306:3306"
+  
+  goober-api:
+    depends_on:
+      - goober-db
+    build:
+      context: ./api
+    container_name: goober-api
+    volumes:
+      - ./api:/opt/apps/api
+    ports:
+      - "8000:8000"
+
+  goober-web-app:
+    depends_on:
+      - goober-api
+    build:
+      context: ./app
+    container_name: goober-web-app
+    volumes:
+      # https://dev.to/codemochi/hot-module-reloading-with-next-js-docker-development-environment-in-4-steps-32i8
+      - ./app:/opt/apps/app
+      - /opt/apps/app/node_modules
+    ports:
+      - "3000:3000"
+
+volumes:
+  goober_db_data: {}
