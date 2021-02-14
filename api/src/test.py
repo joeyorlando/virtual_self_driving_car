@@ -1,3 +1,3 @@
 import spam
 
-spam.system('ls -la')
+spam.system("ls -la")

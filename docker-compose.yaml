@@ -22,6 +22,13 @@ services:
       context: ./api
     container_name: goober-api
     command: bash -c 'uvicorn --reload --host=0.0.0.0 src.api:app'
+    environment:
+      DB_DIALECT: mysql
+      DB_HOST: goober-db
+      DB_PORT: 3306
+      DB_NAME: goober
+      DB_USER: goober
+      DB_PASSWORD: goober
     volumes:
       - ./api:/opt/apps/api
     ports:
@@ -33,6 +40,8 @@ services:
     build:
       context: ./app
     container_name: goober-web-app
+    environment:
+      REACT_APP_WEBSOCKET_URL: localhost:8000
     volumes:
       # https://dev.to/codemochi/hot-module-reloading-with-next-js-docker-development-environment-in-4-steps-32i8
       - ./app:/opt/apps/app

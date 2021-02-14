@@ -1,11 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { MeshProps, useFrame } from 'react-three-fiber';
+import WebsocketClient from '../../lib/websocketClient';
 
 const Car: React.FunctionComponent<MeshProps> = (props) => {
   const mesh = useRef<THREE.Mesh>();
 
   const [hovered, setHover] = useState(false);
   const [active, setActive] = useState(false);
+
+  console.log(WebsocketClient);
 
   useFrame(() => {
     const m = mesh as any; // TODO: what's the proper type here?
