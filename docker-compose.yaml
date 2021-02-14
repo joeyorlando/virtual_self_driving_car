@@ -21,6 +21,7 @@ services:
     build:
       context: ./api
     container_name: goober-api
+    command: bash -c 'uvicorn --reload --host=0.0.0.0 src.api:app'
     volumes:
       - ./api:/opt/apps/api
     ports:
